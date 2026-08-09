@@ -1,4 +1,22 @@
 services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-uhanku_labs}
+      MYSQL_USER: ${MYSQL_USER:-uhanku}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-uhanku}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ul-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   dev:
     image: node:22-alpine
     restart: unless-stopped
@@ -6,11 +24,15 @@ services:
     command: sh -c "npm ci && npm run dev -- --hostname 0.0.0.0"
     environment:
       NODE_ENV: development
+      DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
     volumes:
       - .:/app
       - ul-node_modules:/app/node_modules
     expose:
       - "3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   prod:
     image: node:22-alpine
@@ -19,11 +41,15 @@ services:
     command: sh -c "npm ci && npm run build && npm run start -- --hostname 0.0.0.0"
     environment:
       NODE_ENV: production
+      DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
     volumes:
       - .:/app
       - ul-production_node_modules:/app/node_modules
     expose:
       - "3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   nginx:
     image: nginx:1.27-alpine
@@ -33,5 +59,6 @@ services:
       - "${NGINX_CONFIG:-./nginx/dev/nginx.conf}:/etc/nginx/nginx.conf:ro"
 
 volumes:
+  ul-mysql:
   ul-node_modules:
   ul-production_node_modules:

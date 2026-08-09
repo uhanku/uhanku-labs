@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model WebApp {
+  id          Int    @id @default(autoincrement()) @db.UnsignedInt
+  name        String @unique @db.VarChar(255)
+  description String @db.Text
+  repoUrl     String @map("repo_url") @db.VarChar(2048)
+  users       User[]
+
+  @@map("web_apps")
+}
+
+model User {
+  id       Int    @id @default(autoincrement()) @db.UnsignedInt
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  webappId Int    @map("webapp_id") @db.UnsignedInt
+  webApp   WebApp @relation(fields: [webappId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@map("users")
+}
