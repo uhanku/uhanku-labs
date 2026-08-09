@@ -1,0 +1,28 @@
+.panel {
+  --panel-accent: var(--arcade-purple);
+  --panel-glow: rgba(116, 55, 235, 0.16);
+
+  position: relative;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--panel-accent) 46%, var(--arcade-line));
+  background:
+    linear-gradient(125deg, var(--panel-glow), transparent 48%),
+    rgba(13, 11, 23, 0.78);
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--panel-accent) 13%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.panel[data-tone='cyan'] {
+  --panel-accent: var(--arcade-cyan);
+  --panel-glow: rgba(99, 233, 255, 0.08);
+}
+
+.panel[data-tone='acid'] {
+  --panel-accent: var(--arcade-acid);
+  --panel-glow: rgba(216, 255, 101, 0.07);
+}
+
+.panel[data-tone='hot'] {
+  --panel-accent: var(--arcade-hot);
+  --panel-glow: rgba(255, 93, 158, 0.09);
+}

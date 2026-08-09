@@ -1,0 +1,36 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.grid div {
+  min-width: 0;
+  border: 1px solid var(--arcade-line);
+  background: rgba(8, 7, 14, 0.68);
+}
+
+.grid dd,
+.grid dt {
+  margin: 0;
+}
+
+.grid dd {
+  padding: 15px 16px 8px;
+  color: var(--arcade-acid);
+  font-family: var(--sans);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.grid dt {
+  padding: 4px 16px 15px;
+  color: var(--arcade-muted);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  line-height: 1.55;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}

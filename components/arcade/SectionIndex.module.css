@@ -1,0 +1,39 @@
+.index {
+  position: relative;
+  display: block;
+  margin-bottom: 10px;
+  color: var(--arcade-hot);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+}
+
+.index[data-tone='cyan'] {
+  color: var(--arcade-cyan);
+}
+
+.index[data-tone='acid'] {
+  color: var(--arcade-acid);
+}
+
+.index::before {
+  position: absolute;
+  top: 0;
+  left: -18px;
+  width: 2px;
+  height: 34px;
+  content: '';
+  opacity: 0.65;
+  background: linear-gradient(currentColor, transparent);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .index {
+    font-size: var(--text-2xs);
+  }
+
+  .index::before {
+    display: none;
+  }
+}

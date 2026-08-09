@@ -1,0 +1,167 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--arcade-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--arcade-ink);
+  background: var(--arcade-bg);
+  font: var(--text-body) / 1.6 var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.arcade-root {
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(116, 55, 235, 0.24),
+      transparent 34rem
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+    var(--arcade-bg);
+  background-size:
+    auto,
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size),
+    auto;
+  background-attachment: fixed;
+}
+
+body.arcade-root::before {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  content: '';
+  opacity: 0.1;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0, 0, 0, 0.55) 4px
+  );
+  pointer-events: none;
+}
+
+body.arcade-root::after {
+  position: fixed;
+  z-index: 998;
+  inset: 0;
+  content: '';
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.36) 100%
+  );
+  pointer-events: none;
+}
+
+::selection {
+  color: var(--arcade-bg);
+  background: var(--arcade-acid);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--arcade-ink);
+  font-family: var(--sans);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+p {
+  color: var(--muted-foreground);
+}
+
+code,
+kbd,
+pre,
+.arcade-label {
+  font-family: var(--mono);
+}
+
+:focus-visible {
+  outline: 1px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.arcade-container {
+  width: min(var(--page-width), calc(100% - clamp(28px, 7vw, 92px)));
+  margin-inline: auto;
+}
+
+.arcade-label {
+  color: var(--arcade-cyan);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --grid-size: 24px;
+  }
+
+  .arcade-container {
+    width: min(100% - 28px, var(--page-width));
+  }
+}

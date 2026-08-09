@@ -1,0 +1,95 @@
+.arcade-reveal {
+  animation: arcade-reveal 520ms var(--ease-out) both;
+}
+
+.arcade-reveal--2 {
+  animation-delay: 80ms;
+}
+
+.arcade-reveal--3 {
+  animation-delay: 150ms;
+}
+
+.arcade-reveal--4 {
+  animation-delay: 220ms;
+}
+
+.arcade-signal-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+  animation: arcade-pulse 1.8s ease-in-out infinite;
+}
+
+.arcade-corner-frame {
+  position: relative;
+}
+
+.arcade-corner-frame::before,
+.arcade-corner-frame::after {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  content: '';
+  border-color: var(--arcade-acid);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.arcade-corner-frame::before {
+  top: 7px;
+  left: 7px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.arcade-corner-frame::after {
+  right: 7px;
+  bottom: 7px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+}
+
+@keyframes arcade-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arcade-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 14px #22c55e;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

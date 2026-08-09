@@ -1,0 +1,63 @@
+.button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 14px;
+  border: 1px solid var(--arcade-acid);
+  color: var(--arcade-bg);
+  background: var(--arcade-acid);
+  box-shadow: var(--shadow-acid);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+}
+
+.button[data-variant='ghost'] {
+  border-color: rgba(99, 233, 255, 0.46);
+  color: var(--arcade-cyan);
+  background: rgba(99, 233, 255, 0.035);
+  box-shadow: 4px 4px 0 rgba(99, 233, 255, 0.09);
+}
+
+.button[data-variant='hot'] {
+  border-color: var(--arcade-hot);
+  color: var(--arcade-hot);
+  background: rgba(255, 93, 158, 0.035);
+  box-shadow: var(--shadow-hot);
+}
+
+.button:hover,
+.button:focus-visible {
+  color: var(--arcade-bg);
+  border-color: var(--arcade-ink);
+  outline: none;
+  background: var(--arcade-ink);
+  transform: translate(-2px, -2px);
+}
+
+.button[data-variant='ghost']:hover,
+.button[data-variant='ghost']:focus-visible {
+  border-color: var(--arcade-cyan);
+  background: var(--arcade-cyan);
+}
+
+.button[data-variant='hot']:hover,
+.button[data-variant='hot']:focus-visible {
+  border-color: var(--arcade-hot);
+  background: var(--arcade-hot);
+}
+
+@media (max-width: 760px) {
+  .button {
+    font-size: var(--text-2xs);
+  }
+}
