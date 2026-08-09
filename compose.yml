@@ -1,0 +1,37 @@
+services:
+  dev:
+    image: node:22-alpine
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -c "npm ci && npm run dev -- --hostname 0.0.0.0"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - ul-node_modules:/app/node_modules
+    expose:
+      - "3000"
+
+  prod:
+    image: node:22-alpine
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -c "npm ci && npm run build && npm run start -- --hostname 0.0.0.0"
+    environment:
+      NODE_ENV: production
+    volumes:
+      - .:/app
+      - ul-production_node_modules:/app/node_modules
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - "${NGINX_CONFIG:-./nginx/dev/nginx.conf}:/etc/nginx/nginx.conf:ro"
+
+volumes:
+  ul-node_modules:
+  ul-production_node_modules:
