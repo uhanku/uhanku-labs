@@ -109,3 +109,13 @@ except Exception:
 print(f"Created: {output}")
 print(f"Files included: {included}")
 PY
+
+downloads_dir="/mnt/c/Users/uhank/Downloads"
+mkdir -p "$downloads_dir"
+
+destination="$downloads_dir/$(basename "$output")"
+if [[ "$output" != "$destination" ]]; then
+  mv -- "$output" "$destination"
+fi
+
+echo "Moved: $destination"
