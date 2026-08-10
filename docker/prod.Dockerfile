@@ -15,7 +15,7 @@ COPY . .
 
 ENV NODE_ENV=production
 
-RUN npm run db:generate
+RUN DATABASE_URL=mysql://uhanku:uhanku@mysql:3306/uhanku_labs npm run db:generate
 RUN npm run build
 
 
