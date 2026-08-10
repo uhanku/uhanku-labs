@@ -34,7 +34,7 @@ services:
       mysql:
         condition: service_healthy
 
-  prod:
+  labs:
     image: node:22-alpine
     restart: unless-stopped
     working_dir: /app
