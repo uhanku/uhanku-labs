@@ -15,6 +15,7 @@ COPY . .
 
 ENV NODE_ENV=production
 
+RUN npm run db:generate
 RUN npm run build
 
 
