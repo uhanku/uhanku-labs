@@ -1,0 +1,11 @@
+.git
+.next
+node_modules
+coverage
+*.log
+.env
+.env.*
+!.env.example
+docker/nginx
+tests
+TODO.md
