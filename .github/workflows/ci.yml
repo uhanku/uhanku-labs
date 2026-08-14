@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  contents: read
+
 on:
   push:
   pull_request:
@@ -35,3 +38,61 @@ jobs:
       - run: npm run db:test
       - run: npm run lint
       - run: npm run build
+
+  deploy-production:
+    name: Deploy production
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: uhanku-labs-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Configure production SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.PROD_SSH_KNOWN_HOSTS }}
+        run: |
+          set -eu
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Pull main on production server
+        env:
+          DEPLOY_HOST: ${{ secrets.PROD_SSH_HOST }}
+          DEPLOY_PORT: ${{ secrets.PROD_SSH_PORT }}
+        run: |
+          set -eu
+          test -n "$DEPLOY_HOST"
+          PORT="${DEPLOY_PORT:-22}"
+
+          ssh \
+            -p "$PORT" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            "cat@$DEPLOY_HOST" \
+            'cd /home/cat/uhanku-labs && git pull --ff-only origin main'
+
+      - name: Deploy production service
+        env:
+          DEPLOY_HOST: ${{ secrets.PROD_SSH_HOST }}
+          DEPLOY_PORT: ${{ secrets.PROD_SSH_PORT }}
+        run: |
+          set -eu
+          PORT="${DEPLOY_PORT:-22}"
+          ssh \
+            -p "$PORT" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            "cat@$DEPLOY_HOST" \
+            'cd /home/cat/uhanku-labs && ./scripts/deploy-prod.sh'
