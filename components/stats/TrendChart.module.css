@@ -1,0 +1,76 @@
+.chart {
+  --trend-accent: var(--arcade-acid);
+}
+
+.chart[data-tone='cyan'] {
+  --trend-accent: var(--arcade-cyan);
+}
+
+.chart[data-tone='hot'] {
+  --trend-accent: var(--arcade-hot);
+}
+
+.chart svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.baseline {
+  stroke: var(--arcade-line);
+  stroke-width: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--trend-accent);
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: stats-draw-line 900ms var(--ease-out) forwards;
+}
+
+.point {
+  fill: var(--arcade-bg);
+  stroke: var(--trend-accent);
+  stroke-width: 4;
+  opacity: 0;
+  animation: stats-reveal-point 180ms ease 620ms forwards;
+}
+
+.labels {
+  display: grid;
+  grid-template-columns: repeat(var(--trend-columns), minmax(0, 1fr));
+  margin-top: -22px;
+}
+
+.labels div {
+  text-align: center;
+}
+
+.labels strong {
+  display: block;
+  color: var(--trend-accent);
+  font-size: 1.5rem;
+}
+
+.labels span {
+  display: block;
+  margin-top: 4px;
+  color: var(--arcade-muted);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+}
+
+@keyframes stats-draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes stats-reveal-point {
+  to {
+    opacity: 1;
+  }
+}

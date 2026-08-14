@@ -1,0 +1,9 @@
+.value {
+  display: block;
+  margin: 34px 0 14px;
+  color: var(--metric-accent, var(--arcade-cyan));
+  font-size: clamp(3.8rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.07em;
+}
