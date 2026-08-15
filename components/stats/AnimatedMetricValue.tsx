@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 import styles from './AnimatedMetricValue.module.css';
 
@@ -11,6 +11,23 @@ type AnimatedMetricValueProps = {
   duration?: number;
 };
 
+const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
+
+function subscribeToReducedMotion(onChange: () => void) {
+  const mediaQuery = window.matchMedia(reducedMotionQuery);
+  mediaQuery.addEventListener('change', onChange);
+
+  return () => mediaQuery.removeEventListener('change', onChange);
+}
+
+function getReducedMotionPreference() {
+  return window.matchMedia(reducedMotionQuery).matches;
+}
+
+function getServerReducedMotionPreference() {
+  return false;
+}
+
 export function AnimatedMetricValue({
   value,
   suffix = '%',
@@ -18,12 +35,14 @@ export function AnimatedMetricValue({
   duration = 650,
 }: AnimatedMetricValueProps) {
   const [displayValue, setDisplayValue] = useState(0);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionPreference,
+    getServerReducedMotionPreference,
+  );
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    if (reduceMotion.matches) {
-      setDisplayValue(value);
+    if (prefersReducedMotion) {
       return undefined;
     }
 
@@ -43,12 +62,14 @@ export function AnimatedMetricValue({
     frameId = requestAnimationFrame(frame);
 
     return () => cancelAnimationFrame(frameId);
-  }, [duration, value]);
+  }, [duration, prefersReducedMotion, value]);
+
+  const renderedValue = prefersReducedMotion ? value : displayValue;
 
   return (
     <strong className={styles.value} aria-label={`${prefix}${value}${suffix}`}>
       {prefix}
-      {displayValue}
+      {renderedValue}
       {suffix}
     </strong>
   );
