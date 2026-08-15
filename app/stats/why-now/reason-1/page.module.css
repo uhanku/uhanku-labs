@@ -14,7 +14,6 @@
 .takeawayLabel {
   margin: 0;
   color: var(--arcade-cyan);
-  font-family: var(--mono);
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.13em;

@@ -34,12 +34,12 @@
   box-shadow: 0 0 0 1px var(--arcade-muted);
 }
 
-.event[data-kind='survey'] .dot {
+.event[data-kind="survey"] .dot {
   background: var(--arcade-cyan);
   box-shadow: 0 0 0 1px var(--arcade-cyan);
 }
 
-.event[data-kind='current'] .dot {
+.event[data-kind="current"] .dot {
   background: var(--arcade-acid);
   box-shadow: 0 0 12px rgba(216, 255, 101, 0.55);
 }
@@ -47,7 +47,6 @@
 .year {
   display: block;
   color: var(--arcade-muted);
-  font-family: var(--mono);
   font-size: 0.58rem;
 }
 
@@ -59,12 +58,12 @@
   line-height: 1.15;
 }
 
-.event[data-kind='survey'] .label {
+.event[data-kind="survey"] .label {
   color: var(--arcade-cyan);
   font-size: clamp(1.25rem, 2.3vw, 2rem);
 }
 
-.event[data-kind='current'] .label {
+.event[data-kind="current"] .label {
   color: var(--arcade-acid);
   font-size: clamp(1.25rem, 2.3vw, 2rem);
 }

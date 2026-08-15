@@ -123,7 +123,7 @@ export default function WhyNowReasonOneStatsPage() {
       >
         <header className={styles.adoptionHeader}>
           <span className={styles.sectionLabel}>ADOPTION / 2020 → 2026</span>
-          <h2>From experiment to normal workflow.</h2>
+          <h2>Experiment to Workflow.</h2>
         </header>
 
         <AdoptionTimeline

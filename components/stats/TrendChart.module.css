@@ -2,11 +2,11 @@
   --trend-accent: var(--arcade-acid);
 }
 
-.chart[data-tone='cyan'] {
+.chart[data-tone="cyan"] {
   --trend-accent: var(--arcade-cyan);
 }
 
-.chart[data-tone='hot'] {
+.chart[data-tone="hot"] {
   --trend-accent: var(--arcade-hot);
 }
 
@@ -59,7 +59,6 @@
   display: block;
   margin-top: 4px;
   color: var(--arcade-muted);
-  font-family: var(--mono);
   font-size: 0.58rem;
 }
 

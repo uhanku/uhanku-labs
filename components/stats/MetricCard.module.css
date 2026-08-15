@@ -8,11 +8,11 @@
   background: rgba(13, 11, 23, 0.76);
 }
 
-.card[data-tone='acid'] {
+.card[data-tone="acid"] {
   --metric-accent: var(--arcade-acid);
 }
 
-.card[data-tone='hot'] {
+.card[data-tone="hot"] {
   --metric-accent: var(--arcade-hot);
 }
 
@@ -25,7 +25,6 @@
 
 .index {
   color: var(--metric-accent);
-  font-family: var(--mono);
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.13em;
