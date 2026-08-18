@@ -20,7 +20,7 @@
   padding: 15px 16px 8px;
   color: var(--arcade-acid);
   font-family: var(--sans);
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-size: var(--text-lg);
   font-weight: 900;
   line-height: 1;
 }

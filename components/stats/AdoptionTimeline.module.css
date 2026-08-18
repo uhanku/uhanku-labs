@@ -47,32 +47,32 @@
 .year {
   display: block;
   color: var(--arcade-muted);
-  font-size: 0.58rem;
+  font-size: var(--text-xs);
 }
 
 .label {
   margin: 8px 0 3px;
   color: var(--arcade-ink);
-  font-size: clamp(0.86rem, 1.6vw, 1.15rem);
+  font-size: clamp(var(--text-md), 1.6vw, var(--text-lg));
   font-weight: 800;
   line-height: 1.15;
 }
 
 .event[data-kind="survey"] .label {
   color: var(--arcade-cyan);
-  font-size: clamp(1.25rem, 2.3vw, 2rem);
+  font-size: var(--text-lg);
 }
 
 .event[data-kind="current"] .label {
   color: var(--arcade-acid);
-  font-size: clamp(1.25rem, 2.3vw, 2rem);
+  font-size: var(--text-lg);
 }
 
 .detail {
   display: block;
   max-width: 110px;
   color: var(--arcade-muted);
-  font-size: 0.62rem;
+  font-size: var(--text-xs);
   line-height: 1.4;
 }
 
