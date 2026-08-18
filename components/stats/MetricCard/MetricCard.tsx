@@ -1,5 +1,5 @@
-import { AnimatedMetricValue } from './AnimatedMetricValue';
-import { SourceBadge, type StatsSource } from './SourceBadge';
+import { AnimatedMetricValue } from '../AnimatedMetricValue/AnimatedMetricValue';
+import { SourceBadge, type StatsSource } from '../SourceBadge/SourceBadge';
 import styles from './MetricCard.module.css';
 
 type MetricCardTone = 'acid' | 'cyan' | 'hot';
