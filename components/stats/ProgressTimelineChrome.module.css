@@ -1,0 +1,125 @@
+.progressRail {
+  position: fixed;
+  z-index: 80;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.progressRail span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--arcade-cyan),
+    var(--arcade-acid),
+    var(--arcade-hot)
+  );
+}
+
+.header {
+  position: sticky;
+  z-index: 70;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  min-height: 66px;
+  align-items: center;
+  padding: 0 clamp(16px, 3vw, 44px);
+  border-bottom: 1px solid var(--arcade-line);
+  background: rgba(8, 7, 14, 0.88);
+  backdrop-filter: blur(18px);
+}
+
+.brand,
+.endLink {
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.brand {
+  color: var(--arcade-acid);
+}
+
+.endLink {
+  justify-self: end;
+  color: var(--arcade-muted);
+}
+
+.yearNav {
+  display: flex;
+  gap: 5px;
+}
+
+.yearNav a {
+  display: grid;
+  width: 34px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid transparent;
+  color: var(--arcade-dim);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.yearNav a:hover,
+.yearNav a:focus-visible,
+.yearNav .active {
+  border-color: var(--arcade-line);
+  color: var(--arcade-ink);
+  outline: none;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.yearNav .active {
+  color: var(--arcade-acid);
+  border-color: rgba(216, 255, 101, 0.38);
+}
+
+@media (max-width: 720px) {
+  .header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .endLink {
+    display: none;
+  }
+
+  .yearNav {
+    justify-self: end;
+  }
+
+  .yearNav a {
+    width: 28px;
+  }
+}
+
+@media (max-width: 520px) {
+  .header {
+    padding-inline: 12px;
+  }
+
+  .brand {
+    font-size: 0.44rem;
+  }
+
+  .yearNav {
+    gap: 1px;
+  }
+
+  .yearNav a {
+    width: 25px;
+    font-size: 0.43rem;
+  }
+}
