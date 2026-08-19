@@ -9,3 +9,5 @@ coverage
 docker/nginx
 tests
 TODO.md
+
+storage

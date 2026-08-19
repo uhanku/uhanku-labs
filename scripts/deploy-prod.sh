@@ -15,6 +15,13 @@ fi
 # .env interpolation values.
 export NGINX_CONFIG=./docker/nginx/prod/nginx.conf
 
+MEDIA_STORAGE_DIR=./storage/media
+MEDIA_UPLOAD_TEMP_DIR=./storage/media-uploads
+printf '%s\n' "Ensuring persistent media storage exists at $MEDIA_STORAGE_DIR..."
+install -d -m 0750 "$MEDIA_STORAGE_DIR"
+printf '%s\n' "Ensuring chunk upload workspace exists at $MEDIA_UPLOAD_TEMP_DIR..."
+install -d -m 0750 "$MEDIA_UPLOAD_TEMP_DIR"
+
 printf '%s\n' 'Starting production dependencies...'
 docker compose up -d mysql
 

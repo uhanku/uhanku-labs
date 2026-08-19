@@ -44,3 +44,8 @@ next-env.d.ts
 
 *.patch
 TODO.md
+
+# uploaded media is server-managed and must never be committed
+/storage/
+
+/public/stats

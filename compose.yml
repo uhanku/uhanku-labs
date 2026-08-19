@@ -29,9 +29,19 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
+      MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
+      MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
+      MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
+      MEDIA_STORAGE_DIR: /app/storage/media
+      MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
+      MEDIA_MAX_UPLOAD_BYTES: ${MEDIA_MAX_UPLOAD_BYTES:-52428800}
+      MEDIA_UPLOAD_CHUNK_BYTES: ${MEDIA_UPLOAD_CHUNK_BYTES:-5242880}
+      MEDIA_UPLOAD_TEMP_MAX_AGE_MS: ${MEDIA_UPLOAD_TEMP_MAX_AGE_MS:-86400000}
     volumes:
       - .:/app
       - ul-node_modules:/app/node_modules
+      - ./storage/media:/app/storage/media
+      - ./storage/media-uploads:/app/storage/media-uploads
     expose:
       - "3000"
     depends_on:
@@ -46,6 +56,17 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
+      MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
+      MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
+      MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
+      MEDIA_STORAGE_DIR: /app/storage/media
+      MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
+      MEDIA_MAX_UPLOAD_BYTES: ${MEDIA_MAX_UPLOAD_BYTES:-52428800}
+      MEDIA_UPLOAD_CHUNK_BYTES: ${MEDIA_UPLOAD_CHUNK_BYTES:-5242880}
+      MEDIA_UPLOAD_TEMP_MAX_AGE_MS: ${MEDIA_UPLOAD_TEMP_MAX_AGE_MS:-86400000}
+    volumes:
+      - ./storage/media:/app/storage/media
+      - ./storage/media-uploads:/app/storage/media-uploads
     expose:
       - "3000"
     depends_on:
