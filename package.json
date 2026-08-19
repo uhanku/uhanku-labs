@@ -12,7 +12,8 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "db:test": "npm run db:deploy && npm run db:seed && npm run db:seed && tsx --test tests/database.test.ts"
+    "db:test": "npm run db:deploy && npm run db:seed && npm run db:seed && tsx --test tests/database.test.ts",
+    "media:hash-password": "node scripts/hash-media-password.mjs"
   },
   "dependencies": {
     "@fontsource/press-start-2p": "^5.3.0",

@@ -1,0 +1,152 @@
+.root {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px 16px;
+  border-bottom: 1px solid var(--arcade-line);
+  background: rgba(255, 255, 255, .012);
+}
+
+.overall,
+.item {
+  display: grid;
+  gap: 8px;
+}
+
+.overall {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+
+.overallHeader,
+.itemHeader,
+.footer,
+.itemActions {
+  display: flex;
+  align-items: center;
+}
+
+.overallHeader,
+.itemHeader {
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.overallHeader > span,
+.state,
+.bytes,
+.percent,
+.itemActions button {
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+}
+
+.overallHeader > span,
+.bytes {
+  color: var(--arcade-dim);
+}
+
+.overallHeader > strong,
+.percent {
+  color: var(--arcade-acid);
+}
+
+.filenameWrap {
+  display: flex;
+  min-width: 0;
+  gap: 10px;
+  align-items: center;
+}
+
+.filenameWrap > strong {
+  overflow: hidden;
+  color: var(--arcade-muted);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.state {
+  flex: 0 0 auto;
+  color: var(--arcade-cyan);
+  letter-spacing: .08em;
+}
+
+.state_processing {
+  color: var(--arcade-hot);
+}
+
+.state_completed {
+  color: var(--arcade-acid);
+}
+
+.state_failed {
+  color: #ff6b7a;
+}
+
+.track {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .035);
+}
+
+.track > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--arcade-cyan), var(--arcade-acid));
+  transition: width 180ms ease;
+}
+
+.itemActions {
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.itemActions button {
+  padding: 3px 6px;
+  border: 0;
+  color: var(--arcade-dim);
+  background: transparent;
+  cursor: pointer;
+}
+
+.itemActions button:hover,
+.itemActions button:focus-visible {
+  color: #ff6b7a;
+  outline: none;
+}
+
+.footer {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.error {
+  color: #ff8a96;
+  font-size: var(--text-2xs);
+  text-align: right;
+}
+
+@media (max-width: 620px) {
+  .itemHeader,
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .itemActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .error {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track > span {
+    transition: none;
+  }
+}
