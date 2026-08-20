@@ -22,7 +22,9 @@ services:
       retries: 20
 
   dev:
-    image: node:22-alpine
+    build:
+      context: .
+      dockerfile: docker/dev.Dockerfile
     restart: unless-stopped
     working_dir: /app
     command: sh -c "npm ci && npm run dev -- --hostname 0.0.0.0"
@@ -40,8 +42,7 @@ services:
     volumes:
       - .:/app
       - ul-node_modules:/app/node_modules
-      - ./storage/media:/app/storage/media
-      - ./storage/media-uploads:/app/storage/media-uploads
+      - ul-storage-dev:/app/storage
     expose:
       - "3000"
     depends_on:
@@ -65,8 +66,7 @@ services:
       MEDIA_UPLOAD_CHUNK_BYTES: ${MEDIA_UPLOAD_CHUNK_BYTES:-5242880}
       MEDIA_UPLOAD_TEMP_MAX_AGE_MS: ${MEDIA_UPLOAD_TEMP_MAX_AGE_MS:-86400000}
     volumes:
-      - ./storage/media:/app/storage/media
-      - ./storage/media-uploads:/app/storage/media-uploads
+      - ul-storage-prod:/app/storage
     expose:
       - "3000"
     depends_on:
@@ -83,3 +83,5 @@ services:
 volumes:
   ul-mysql:
   ul-node_modules:
+  ul-storage-dev:
+  ul-storage-prod:

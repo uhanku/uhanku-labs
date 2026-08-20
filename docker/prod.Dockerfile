@@ -27,6 +27,10 @@ ENV NODE_ENV=production
 
 COPY --chown=node:node --from=builder /app ./
 
+# The named storage volume is initialized from this directory on first mount.
+RUN mkdir -p /app/storage/media /app/storage/media-uploads \
+  && chown -R node:node /app/storage
+
 USER node
 
 EXPOSE 3000
