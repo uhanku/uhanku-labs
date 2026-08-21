@@ -39,11 +39,6 @@ uses a separate `ul-storage-dev` volume, so local uploads cannot modify
 production media. Both application containers run as the image `node` user;
 the storage directories are initialized with matching ownership.
 
-The production deployment script automatically copies any existing
-`storage/media` and `storage/media-uploads` contents into the production volume
-the first time it deploys this storage layout. The original host directories
-are left untouched as a backup.
-
 ### Local media-admin development
 
 The development Nginx configuration serves the application at
