@@ -6,6 +6,7 @@ import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { UploadProgress, type UploadProgressItem } from "@/components/media/UploadProgress";
 import type { MediaBrowserEntry, MediaTreeNode } from "@/lib/media-manager";
+import { formatRelativeTime } from "@/lib/relative-time";
 
 import styles from "./media-admin.module.css";
 
@@ -58,16 +59,6 @@ function formatBytes(bytes: number | null) {
   }
 
   return `${value >= 10 ? value.toFixed(0) : value.toFixed(1)} ${units[unitIndex]}`;
-}
-
-function formatDate(value: string) {
-  // Keep SSR and hydration deterministic. Using the runtime defaults here
-  // makes the server and browser format this same timestamp differently.
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "UTC",
-  }).format(new Date(value));
 }
 
 function submitPost(action: string, fields: Array<[string, string]>) {
@@ -159,6 +150,7 @@ export default function MediaFileManager({
   maxUploadBytes,
   tree,
 }: MediaFileManagerProps) {
+  const [now, setNow] = useState<number | null>(null);
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const uploadIdsRef = useRef(new Map<string, string>());
@@ -193,6 +185,16 @@ export default function MediaFileManager({
 
     return () => window.clearTimeout(resetState);
   }, [currentPath]);
+
+  useEffect(() => {
+    const initialUpdate = window.setTimeout(() => setNow(Date.now()), 0);
+    const interval = window.setInterval(() => setNow(Date.now()), 30_000);
+
+    return () => {
+      window.clearTimeout(initialUpdate);
+      window.clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     if (!preview) return;
@@ -596,7 +598,7 @@ export default function MediaFileManager({
                     </td>
                     <td>{entry.fileType}</td>
                     <td>{formatBytes(entry.size)}</td>
-                    <td>{formatDate(entry.modifiedAt)}</td>
+                    <td>{now === null ? "—" : formatRelativeTime(entry.modifiedAt, now)}</td>
                     <td>
                       <div className={styles.rowActions}>
                         {entry.kind === "file" ? (
@@ -660,7 +662,7 @@ export default function MediaFileManager({
               <dl className={styles.previewDetails}>
                 <div><dt>TYPE</dt><dd>{preview.fileType}</dd></div>
                 <div><dt>SIZE</dt><dd>{formatBytes(preview.size)}</dd></div>
-                <div><dt>MODIFIED</dt><dd>{formatDate(preview.modifiedAt)}</dd></div>
+                <div><dt>MODIFIED</dt><dd>{now === null ? "—" : formatRelativeTime(preview.modifiedAt, now)}</dd></div>
                 <div><dt>PATH</dt><dd>{preview.relativePath}</dd></div>
               </dl>
 
