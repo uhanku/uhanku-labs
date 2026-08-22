@@ -10,11 +10,6 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
-# Always use the production reverse-proxy configuration during deployment.
-# Environment variables exported by the shell take precedence over Compose's
-# .env interpolation values.
-export NGINX_CONFIG=./docker/nginx/prod/nginx.conf
-
 printf '%s\n' 'Starting production dependencies...'
 docker compose up -d mysql
 
