@@ -22,8 +22,11 @@ docker compose run --rm labs npm run db:deploy
 printf '%s\n' 'Starting the production application...'
 docker compose up -d --no-deps labs
 
+printf '%s\n' 'Starting Open WebUI...'
+docker compose up -d --no-deps open-webui
+
 printf '%s\n' 'Ensuring the production reverse proxy is running...'
 docker compose up -d --no-deps nginx
 
 printf '%s\n' 'Production services:'
-docker compose ps labs nginx
+docker compose ps labs open-webui nginx

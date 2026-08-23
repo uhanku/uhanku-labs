@@ -74,6 +74,30 @@ services:
       mysql:
         condition: service_healthy
 
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
+    environment:
+      WEBUI_URL: ${OPENWEBUI_WEBUI_URL:-http://chat.uhanku.test}
+      CORS_ALLOW_ORIGIN: ${OPENWEBUI_CORS_ALLOW_ORIGIN:-http://chat.uhanku.test}
+      OPENAI_API_BASE_URLS: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      OPENAI_API_KEYS: ${OPENROUTER_API_KEY:-}
+    volumes:
+      - ul-open-webui:/app/backend/data
+    expose:
+      - "8080"
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?SEARXNG_SECRET must be set}
+    volumes:
+      - ul-searxng-config:/etc/searxng
+      - ul-searxng-cache:/var/cache/searxng
+    expose:
+      - "8080"
+
   nginx:
     image: nginx:stable-alpine
     ports:
@@ -88,3 +112,6 @@ volumes:
   ul-next-dev:
   ul-storage-dev:
   ul-storage-prod:
+  ul-open-webui:
+  ul-searxng-config:
+  ul-searxng-cache:

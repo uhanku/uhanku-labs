@@ -22,6 +22,19 @@ docker compose run --rm labs npm run db:deploy
 
 The application is available on the port configured by `NGINX_PORT` in `.env` (port `80` by default).
 
+Open WebUI is available at `http://chat.uhanku.com`. Configure the
+server-managed `.env` with an OpenRouter key before starting the stack:
+
+```dotenv
+OPENROUTER_API_KEY=<openrouter-api-key>
+OPENWEBUI_WEBUI_URL=http://chat.uhanku.com
+OPENWEBUI_CORS_ALLOW_ORIGIN=http://chat.uhanku.com
+```
+
+The Open WebUI database and uploaded files are stored in the Docker-managed
+`ul-open-webui` volume. The production deployment script selects
+`docker/nginx/prod/nginx.conf` automatically.
+
 View service logs with:
 
 ```bash
@@ -46,6 +59,7 @@ The development Nginx configuration serves the application at
 
 ```text
 127.0.0.1 labs.uhanku.test
+127.0.0.1 chat.uhanku.test
 ```
 
 Start the development stack with:
@@ -58,6 +72,15 @@ Then open:
 
 ```text
 http://labs.uhanku.test/media-admin/login
+```
+
+Open WebUI is available at `http://chat.uhanku.test`. For local OpenRouter
+access, set these values in `.env`:
+
+```dotenv
+OPENROUTER_API_KEY=<openrouter-api-key>
+OPENWEBUI_WEBUI_URL=http://chat.uhanku.test
+OPENWEBUI_CORS_ALLOW_ORIGIN=http://chat.uhanku.test
 ```
 
 Do not open the login page at `http://0.0.0.0:3000`. `0.0.0.0` is the
