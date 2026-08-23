@@ -11,7 +11,7 @@ cp .env.example .env
 Deploy the production application behind Nginx:
 
 ```bash
-docker compose up --build -d mysql labs nginx
+docker compose up --build -d mysql labs open-webui nginx
 ```
 
 Apply database migrations:
@@ -102,9 +102,10 @@ runs:
 ./scripts/deploy-prod.sh
 ```
 
-The production deploy script builds the `labs` image, applies Prisma migrations,
-starts the `labs` service, and ensures Nginx is running with
-`docker/nginx/prod/nginx.conf`.
+The production deploy script builds the `labs` and patched Open WebUI images,
+applies Prisma migrations, starts both services, and ensures Nginx is running
+with `docker/nginx/prod/nginx.conf`. The Open WebUI image patch removes the
+automatic ` (Open WebUI)` suffix from custom names such as `u-chat`.
 
 Create a GitHub Environment named `production` and configure these environment
 secrets:

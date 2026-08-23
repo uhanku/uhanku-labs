@@ -16,6 +16,9 @@ docker compose up -d mysql
 printf '%s\n' 'Building the production application image...'
 docker compose build labs
 
+printf '%s\n' 'Building the branded Open WebUI image...'
+docker compose build open-webui
+
 printf '%s\n' 'Applying production database migrations...'
 docker compose run --rm labs npm run db:deploy
 

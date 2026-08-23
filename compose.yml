@@ -75,9 +75,12 @@ services:
         condition: service_healthy
 
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    build:
+      context: .
+      dockerfile: Dockerfile.openwebui
     restart: unless-stopped
     environment:
+      WEBUI_NAME: "u-chat"
       WEBUI_URL: ${OPENWEBUI_WEBUI_URL:-http://chat.uhanku.test}
       CORS_ALLOW_ORIGIN: ${OPENWEBUI_CORS_ALLOW_ORIGIN:-http://chat.uhanku.test}
       OPENAI_API_BASE_URLS: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
