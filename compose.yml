@@ -85,10 +85,17 @@ services:
       CORS_ALLOW_ORIGIN: ${OPENWEBUI_CORS_ALLOW_ORIGIN:-http://chat.uhanku.test}
       OPENAI_API_BASE_URLS: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
       OPENAI_API_KEYS: ${OPENROUTER_API_KEY:-}
+      ENABLE_WEB_SEARCH: "true"
+      WEB_SEARCH_ENGINE: searxng
+      WEB_SEARCH_RESULT_COUNT: "5"
+      WEB_SEARCH_CONCURRENT_REQUESTS: "3"
+      SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
     volumes:
       - ul-open-webui:/app/backend/data
     expose:
       - "8080"
+    depends_on:
+      - searxng
 
   searxng:
     image: docker.io/searxng/searxng:latest
@@ -96,7 +103,7 @@ services:
     environment:
       SEARXNG_SECRET: ${SEARXNG_SECRET:?SEARXNG_SECRET must be set}
     volumes:
-      - ul-searxng-config:/etc/searxng
+      - ./docker/searxng:/etc/searxng
       - ul-searxng-cache:/var/cache/searxng
     expose:
       - "8080"
@@ -116,5 +123,4 @@ volumes:
   ul-storage-dev:
   ul-storage-prod:
   ul-open-webui:
-  ul-searxng-config:
   ul-searxng-cache:

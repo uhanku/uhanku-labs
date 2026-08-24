@@ -47,6 +47,13 @@ Stop the production stack with:
 docker compose down
 ```
 
+Verify SearXNG from inside the Open WebUI container (the response should
+include both `results` and `unresponsive_engines`):
+
+```bash
+docker compose exec open-webui python -c 'import json, urllib.parse, urllib.request; u="http://searxng:8080/search?" + urllib.parse.urlencode({"q":"OpenAI","format":"json"}); d=json.load(urllib.request.urlopen(u)); print("results:", len(d.get("results", []))); print("unresponsive_engines:", d.get("unresponsive_engines", []))'
+```
+
 Media is stored in the Docker-managed `ul-storage-prod` volume. Development
 uses a separate `ul-storage-dev` volume, so local uploads cannot modify
 production media. Both application containers run as the image `node` user;

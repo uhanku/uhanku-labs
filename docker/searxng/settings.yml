@@ -1,0 +1,20 @@
+use_default_settings: true
+
+server:
+  limiter: false
+  public_instance: false
+  image_proxy: true
+
+search:
+  formats:
+    - html
+    - json
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
+
+outgoing:
+  request_timeout: 10.0
+  max_request_timeout: 15.0
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
