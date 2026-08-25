@@ -129,6 +129,46 @@ must be able to run Docker. `/home/cat/uhanku-labs/.env` must contain the
 production database credentials; it remains server-managed and is not changed
 by the deployment.
 
+## Hermes agent
+
+The `hermes` Compose service runs the Hermes agent gateway with its state
+persisted in the repository root's `.hermes/` directory (mounted at
+`/opt/data`; never committed). The browser stack is configured declaratively
+in `.hermes/config.yaml`:
+
+```yaml
+browser:
+  backend: "off"
+  cloud_provider: "local"
+  engine: "chrome"
+```
+
+`backend: "off"` disables the external Browser Use CLI backend. Hermes then
+serves browsing through its built-in `browser_*` tools; it does not disable
+browser functionality.
+
+Restart the service after editing `config.yaml` so the gateway picks up the
+change:
+
+```bash
+docker compose restart hermes
+```
+
+Verify the effective configuration with:
+
+```bash
+docker exec hermes hermes config get browser.backend
+docker exec hermes hermes config get browser.cloud_provider
+docker exec hermes hermes config get browser.engine
+```
+
+If the `config get` commands are unavailable, inspect the effective file
+instead:
+
+```bash
+docker exec hermes cat /opt/data/config.yaml
+```
+
 ## Authenticated media uploads
 
 Uhanku Labs exposes a private upload UI at `/media-admin` and public media at

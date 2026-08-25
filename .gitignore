@@ -48,6 +48,9 @@ TODO.md
 # uploaded media is server-managed and must never be committed
 /storage/
 
+# Hermes agent state (sessions, memories, logs, config.yaml)
+/.hermes/
+
 /public/stats
 
 /scrapper
