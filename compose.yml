@@ -50,31 +50,31 @@ services:
       mysql:
         condition: service_healthy
 
-labs:
-  build:
-    context: .
-    dockerfile: docker/prod.Dockerfile
-  restart: unless-stopped
-  working_dir: /app
-  environment:
-    NODE_ENV: production
-    DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
-    MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
-    MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
-    MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
-    MEDIA_STORAGE_DIR: /app/storage/media
-    MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
-    MEDIA_MAX_UPLOAD_BYTES: ${MEDIA_MAX_UPLOAD_BYTES:-52428800}
-    MEDIA_UPLOAD_CHUNK_BYTES: ${MEDIA_UPLOAD_CHUNK_BYTES:-5242880}
-    MEDIA_UPLOAD_TEMP_MAX_AGE_MS: ${MEDIA_UPLOAD_TEMP_MAX_AGE_MS:-86400000}
-  volumes:
-    - .:/app
-    - ul-storage-prod:/app/storage
-  expose:
-    - "3000"
-  depends_on:
-    mysql:
-      condition: service_healthy
+  labs:
+    build:
+      context: .
+      dockerfile: docker/prod.Dockerfile
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
+      MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
+      MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
+      MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
+      MEDIA_STORAGE_DIR: /app/storage/media
+      MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
+      MEDIA_MAX_UPLOAD_BYTES: ${MEDIA_MAX_UPLOAD_BYTES:-52428800}
+      MEDIA_UPLOAD_CHUNK_BYTES: ${MEDIA_UPLOAD_CHUNK_BYTES:-5242880}
+      MEDIA_UPLOAD_TEMP_MAX_AGE_MS: ${MEDIA_UPLOAD_TEMP_MAX_AGE_MS:-86400000}
+    volumes:
+      - .:/app
+      - ul-storage-prod:/app/storage
+    expose:
+      - "3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   open-webui:
     build:
