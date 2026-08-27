@@ -133,8 +133,46 @@ by the deployment.
 
 The `hermes` Compose service runs the Hermes agent gateway with its state
 persisted in the repository root's `.hermes/` directory (mounted at
-`/opt/data`; never committed). The browser stack is configured declaratively
-in `.hermes/config.yaml`:
+`/opt/data`; never committed).
+
+### Setup
+
+Copy the Hermes variables from `.env.example` into `.env`:
+
+```bash
+HERMES_UID=1000        # UID that owns ./.hermes inside the container
+HERMES_GID=1000        # GID that owns ./.hermes inside the container
+HERMES_USERNAME=       # dashboard basic-auth username
+HERMES_PASSWORD=       # dashboard basic-auth password
+HERMES_AUTH_SECRET=    # long random value, e.g. openssl rand -hex 32
+HERMES_API_SERVER_KEY= # API server key, e.g. openssl rand -hex 32
+```
+
+The image refuses to run as an arbitrary `--user`. Instead it starts as root
+and remaps its internal `hermes` user to `HERMES_UID`/`HERMES_GID`, chowning
+the data volume at boot, so files in `./.hermes/` land owned by your host
+user. Keep both values set to the UID/GID that owns `./.hermes/` on the host
+(`1000` by default).
+
+Start the service:
+
+```bash
+docker compose up -d hermes
+```
+
+Run the interactive setup wizard to configure providers and integrations:
+
+```bash
+docker exec -it server-hermes-1 hermes setup
+```
+
+The Web UI is available at `http://ai.uhanku.test` through the Nginx reverse
+proxy (dev) or directly on port `9119`; the dashboard also listens on
+`127.0.0.1:8642`.
+
+### Browser configuration
+
+The browser stack is configured declaratively in `.hermes/config.yaml`:
 
 ```yaml
 browser:
