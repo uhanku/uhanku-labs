@@ -107,6 +107,7 @@ services:
       - ul-searxng-cache:/var/cache/searxng
     expose:
       - "8080"
+
   crawl4ai:
     image: unclecode/crawl4ai:0.9.2
     restart: unless-stopped
@@ -120,7 +121,6 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
-    pids_limit: 512
     read_only: true
     tmpfs:
       - /tmp
@@ -139,6 +139,7 @@ services:
       resources:
         limits:
           memory: 4G
+          pids: 512
         reservations:
           memory: 1G
 
