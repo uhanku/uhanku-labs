@@ -13,6 +13,17 @@ fi
 printf '%s\n' 'Starting production dependencies...'
 docker compose up -d mysql
 
+# The production image no longer bakes in node_modules or a build; it bind-mounts
+# the host source tree (see compose.yml labs service), so install and build here.
+printf '%s\n' 'Installing application dependencies on host...'
+npm ci
+
+printf '%s\n' 'Generating Prisma client...'
+npm run db:generate
+
+printf '%s\n' 'Building the production application on host...'
+npm run build
+
 printf '%s\n' 'Building the production application image...'
 docker compose build labs
 

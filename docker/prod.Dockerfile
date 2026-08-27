@@ -1,37 +1,8 @@
-FROM node:22-alpine AS deps
-
-WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN npm ci --include=dev
-
-
-FROM node:22-alpine AS builder
-
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-ENV NODE_ENV=production
-
-RUN DATABASE_URL=mysql://uhanku:uhanku@mysql:3306/uhanku_labs npm run db:generate
-RUN npm run build
-
-
-FROM node:22-alpine AS runner
+FROM node:22-bookworm-slim
 
 WORKDIR /app
 
 ENV NODE_ENV=production
-
-COPY --chown=node:node --from=builder /app ./
-
-# The named storage volume is initialized from this directory on first mount.
-RUN mkdir -p /app/storage/media /app/storage/media-uploads \
-  && chown -R node:node /app/storage
-
-USER node
 
 EXPOSE 3000
 
