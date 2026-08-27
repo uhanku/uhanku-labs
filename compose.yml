@@ -79,7 +79,7 @@ services:
   open-webui:
     build:
       context: .
-      dockerfile: Dockerfile.openwebui
+      dockerfile: docker/openwebui.Dockerfile
     restart: unless-stopped
     environment:
       WEBUI_NAME: "u-chat"
