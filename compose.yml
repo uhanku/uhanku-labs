@@ -115,6 +115,14 @@ services:
     restart: unless-stopped
     environment:
       CRAWL4AI_API_TOKEN: ${CRAWL4AI_API_TOKEN:?CRAWL4AI_API_TOKEN must be set}
+      # Extraction LLM via OpenRouter (LiteLLM: model=openrouter/<id>)
+      LLM_PROVIDER: ${LLM_PROVIDER:-openrouter/liquid/lfm-2.5-2.6b:free}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_API_BASE: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      # Compatibility: allow openai/provider path with OpenRouter endpoint
+      OPENAI_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      LLM_BASE_URL: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
     expose:
       - "11235"
     shm_size: "1gb"
