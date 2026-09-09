@@ -8,7 +8,13 @@ function normalizedHost(request: NextRequest) {
 }
 
 export function isAllowedMediaHost(request: NextRequest) {
-  const host = normalizedHost(request);
+  const hostHeader = request.headers.get("host");
+
+  // Next's image optimizer re-dispatches relative URLs internally with no Host
+  // header; every real HTTP/1.1 request carries one.
+  if (!hostHeader) return true;
+
+  const host = hostHeader.split(":", 1)[0]?.trim().toLowerCase() ?? "";
 
   if (host === PRODUCTION_MEDIA_HOST) return true;
 
