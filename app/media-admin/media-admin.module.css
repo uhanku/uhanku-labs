@@ -8,12 +8,7 @@
   margin: 0 auto;
 }
 
-.authShell {
-  width: min(760px, 100%);
-}
-
 .eyebrow,
-.panelLabel,
 .treeHeader {
   margin: 0;
   color: var(--arcade-cyan);
@@ -78,17 +73,6 @@
   margin-top: 20px;
 }
 
-.panel {
-  padding: clamp(20px, 4vw, 32px);
-  border: 1px solid var(--arcade-line);
-  background: var(--arcade-panel);
-  box-shadow: var(--shadow-pixel-sm);
-}
-
-.authShell .panel {
-  margin-top: 34px;
-}
-
 .panelLabel {
   margin-bottom: 18px;
   color: var(--arcade-acid);
@@ -130,14 +114,12 @@
   padding: 14px !important;
 }
 
-.actions,
 .rowActions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
 }
-
 .button {
   min-height: 42px;
   padding: 0 15px;

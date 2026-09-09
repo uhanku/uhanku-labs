@@ -78,7 +78,7 @@ docker compose up --build -d mysql dev nginx
 Then open:
 
 ```text
-http://labs.uhanku.test/media-admin/login
+http://labs.uhanku.test
 ```
 
 Open WebUI is available at `http://chat.uhanku.test`. For local OpenRouter

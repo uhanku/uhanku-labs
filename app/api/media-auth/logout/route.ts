@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     return new NextResponse(null, { status: 404 });
   }
 
-  const response = redirectToMediaPath("/media-admin/login");
+  const response = redirectToMediaPath("/");
   response.cookies.set(MEDIA_SESSION_COOKIE, "", {
     ...mediaSessionCookieOptions(),
     maxAge: 0,

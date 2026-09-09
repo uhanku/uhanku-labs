@@ -29,7 +29,7 @@ function clientKey(request: NextRequest) {
 
 function redirectToLogin(error: string) {
   const params = new URLSearchParams({ error });
-  return redirectToMediaPath(`/media-admin/login?${params}`);
+  return redirectToMediaPath(`/?${params}`);
 }
 
 export async function POST(request: NextRequest) {

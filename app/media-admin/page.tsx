@@ -84,10 +84,10 @@ export default async function MediaAdminPage({
   try {
     session = verifyMediaSessionToken(cookieStore.get(MEDIA_SESSION_COOKIE)?.value);
   } catch {
-    redirect("/media-admin/login?error=unavailable");
+    redirect("/?error=unavailable");
   }
 
-  if (!session) redirect("/media-admin/login");
+  if (!session) redirect("/");
 
   const params = await searchParams;
   const normalizedPath = normalizeMediaRelativePath(params.path ?? "");

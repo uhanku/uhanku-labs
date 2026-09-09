@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!session) {
-    return redirectToMediaPath("/media-admin/login");
+    return redirectToMediaPath("/");
   }
 
   let parent = "";
