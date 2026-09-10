@@ -18,15 +18,8 @@ export function ProgressTimelineChrome({
   endLabel = 'PATTERNS ↓',
 }: ProgressTimelineChromeProps) {
   const [activeYear, setActiveYear] = useState(years[0] ?? '');
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
-      setProgress(Math.min(Math.max(ratio, 0), 1));
-    };
-
     const chapters = [...document.querySelectorAll<HTMLElement>('[data-progress-year]')];
     const observer = new IntersectionObserver(
       (entries) => {
@@ -44,23 +37,14 @@ export function ProgressTimelineChrome({
     );
 
     chapters.forEach((chapter) => observer.observe(chapter));
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', updateProgress);
-      window.removeEventListener('resize', updateProgress);
     };
   }, []);
 
   return (
     <>
-      <div className={styles.progressRail} aria-hidden="true">
-        <span style={{ width: `${progress * 100}%` }} />
-      </div>
-
       <header className={styles.header}>
         <a className={styles.brand} href="#top">
           {brand}
