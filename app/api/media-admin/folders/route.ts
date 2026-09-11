@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getMediaSessionFromRequest } from "@/lib/media-auth";
+import { getMediaSessionFromRequest } from "@/lib/auth";
 import { createMediaDirectory, MediaManagerError } from "@/lib/media-manager";
 import { isAllowedMediaMutationRequest, redirectToMediaPath } from "@/lib/media-host";
 import { normalizeMediaRelativePath } from "@/lib/media-storage";

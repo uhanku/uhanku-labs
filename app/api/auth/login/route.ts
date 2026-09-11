@@ -5,7 +5,7 @@ import {
   createMediaSessionToken,
   mediaSessionCookieOptions,
   verifyMediaCredentials,
-} from "@/lib/media-auth";
+} from "@/lib/auth";
 import { isAllowedMediaMutationRequest, redirectToMediaPath } from "@/lib/media-host";
 import {
   canAttemptMediaLogin,

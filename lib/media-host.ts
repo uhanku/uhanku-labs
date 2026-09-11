@@ -2,6 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const PRODUCTION_MEDIA_HOST = "labs.uhanku.com";
 const DEVELOPMENT_MEDIA_HOST = "labs.uhanku.test";
+const DEVELOPMENT_MEDIA_HOSTS = new Set([
+  DEVELOPMENT_MEDIA_HOST,
+  "localhost",
+  "127.0.0.1",
+  "[::1]",
+]);
 
 function normalizedHost(request: NextRequest) {
   return request.headers.get("host")?.split(":", 1)[0]?.trim().toLowerCase() ?? "";
@@ -18,7 +24,7 @@ export function isAllowedMediaHost(request: NextRequest) {
 
   if (host === PRODUCTION_MEDIA_HOST) return true;
 
-  return process.env.NODE_ENV === "development" && host === DEVELOPMENT_MEDIA_HOST;
+  return process.env.NODE_ENV === "development" && DEVELOPMENT_MEDIA_HOSTS.has(host);
 }
 
 export function isAllowedMediaMutationRequest(request: NextRequest) {

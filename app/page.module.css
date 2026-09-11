@@ -116,3 +116,98 @@
   background: rgba(255, 95, 159, .06);
   line-height: 1.55;
 }
+
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.buttonSecondary {
+  border-color: var(--arcade-line);
+  color: var(--arcade-ink);
+  background: transparent;
+}
+
+.buttonSecondary:hover,
+.buttonSecondary:focus-visible {
+  box-shadow: 4px 4px 0 rgba(0, 255, 240, .14);
+}
+
+.sectionLabel {
+  margin: 44px 0 0;
+  color: var(--arcade-acid);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: .12em;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid var(--arcade-line);
+  background: var(--arcade-panel);
+  box-shadow: var(--shadow-pixel-sm);
+  text-decoration: none;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  outline: none;
+  transform: translate(-2px, -2px);
+  border-color: var(--arcade-cyan);
+  box-shadow: 6px 6px 0 rgba(0, 255, 240, .12);
+}
+
+.cardTop {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardPath {
+  color: var(--arcade-dim);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: .08em;
+}
+
+.tag {
+  padding: 4px 8px;
+  border: 1px solid var(--arcade-hot);
+  color: var(--arcade-hot);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: .1em;
+}
+
+.tagPublic {
+  border-color: var(--arcade-dim);
+  color: var(--arcade-dim);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+
+.cardDesc {
+  margin: 0;
+  color: var(--arcade-muted);
+  line-height: 1.6;
+}

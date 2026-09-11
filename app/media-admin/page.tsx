@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { MEDIA_SESSION_COOKIE, verifyMediaSessionToken } from "@/lib/media-auth";
+import { MEDIA_SESSION_COOKIE, verifyMediaSessionToken } from "@/lib/auth";
 import {
   getMediaDirectorySize,
   getMediaTree,
@@ -131,7 +131,7 @@ export default async function MediaAdminPage({
             </p>
           </div>
 
-          <form action="/api/media-auth/logout" method="post">
+          <form action="/api/auth/logout" method="post">
             <button className={`${styles.button} ${styles.buttonSecondary}`} type="submit">
               SIGN OUT
             </button>

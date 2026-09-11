@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getMediaSessionFromRequest } from "@/lib/media-auth";
+import { getMediaSessionFromRequest } from "@/lib/auth";
 import {
   ChunkedMediaUploadError,
   initializeChunkedMediaUpload,

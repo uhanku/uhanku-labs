@@ -219,8 +219,8 @@ the guarded `/media/[media]` route.
 Configure these values in the server-managed `.env` file:
 
 ```dotenv
-MEDIA_ADMIN_USERNAME=<username>
-MEDIA_ADMIN_PASSWORD_HASH=<scrypt hash>
+ADMIN_USERNAME=<username>
+ADMIN_PASSWORD_HASH=<scrypt hash>
 MEDIA_SESSION_SECRET=<long random secret>
 MEDIA_MAX_UPLOAD_BYTES=52428800
 ```

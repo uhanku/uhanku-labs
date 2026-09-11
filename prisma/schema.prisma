@@ -26,3 +26,57 @@ model User {
 
   @@map("users")
 }
+
+model BusSchedule {
+  id          Int                    @id @default(autoincrement()) @db.UnsignedInt
+  importedAt  DateTime               @default(now()) @map("imported_at")
+  consultedOn String                 @map("consulted_on") @db.VarChar(10)
+  source      String                 @db.VarChar(255)
+  title       String?                @db.VarChar(255)
+  active      Boolean                @default(false)
+  lines       BusLine[]
+  directions  BusScheduleDirection[]
+
+  @@map("bus_schedules")
+}
+
+model BusLine {
+  id         Int           @id @default(autoincrement()) @db.UnsignedInt
+  scheduleId Int           @map("schedule_id") @db.UnsignedInt
+  schedule   BusSchedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  direction  String        @db.VarChar(64)
+  dayType    String        @map("day_type") @db.VarChar(16)
+  lineNo     String        @map("line_no") @db.VarChar(8)
+  route      String        @db.VarChar(255)
+  status     String?       @db.VarChar(255)
+  departures BusDeparture[]
+
+  @@index([scheduleId])
+  @@index([direction, dayType])
+  @@map("bus_lines")
+}
+
+model BusDeparture {
+  id       Int     @id @default(autoincrement()) @db.UnsignedInt
+  lineId   Int     @map("line_id") @db.UnsignedInt
+  line     BusLine @relation(fields: [lineId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  time     String  @db.VarChar(5)
+  position Int
+
+  @@index([lineId])
+  @@map("bus_departures")
+}
+
+model BusScheduleDirection {
+  id         Int         @id @default(autoincrement()) @db.UnsignedInt
+  scheduleId Int         @map("schedule_id") @db.UnsignedInt
+  schedule   BusSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  direction  String      @db.VarChar(64)
+  heading    String      @db.VarChar(64)
+  location   String      @db.VarChar(255)
+  howToRead  String      @map("how_to_read") @db.VarChar(255)
+
+  @@index([scheduleId])
+  @@unique([scheduleId, direction])
+  @@map("bus_schedule_directions")
+}
