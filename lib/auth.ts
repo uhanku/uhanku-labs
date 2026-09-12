@@ -41,7 +41,7 @@ function decodePasswordHash(value: string) {
 
   if (algorithm !== "scrypt" || !salt || !derivedKey) {
     throw new Error(
-      "ADMIN_PASSWORD_HASH must use the format scrypt:<salt>:<derived-key>.",
+      "MEDIA_ADMIN_PASSWORD_HASH must use the format scrypt:<salt>:<derived-key>.",
     );
   }
 
@@ -49,15 +49,15 @@ function decodePasswordHash(value: string) {
   const derivedKeyBuffer = Buffer.from(derivedKey, "base64url");
 
   if (saltBuffer.byteLength < 16 || derivedKeyBuffer.byteLength !== SCRYPT_KEY_LENGTH) {
-    throw new Error("ADMIN_PASSWORD_HASH is malformed.");
+    throw new Error("MEDIA_ADMIN_PASSWORD_HASH is malformed.");
   }
 
   return { saltBuffer, derivedKeyBuffer };
 }
 
 export function verifyMediaCredentials(username: string, password: string) {
-  const configuredUsername = getRequiredEnv("ADMIN_USERNAME");
-  const configuredPasswordHash = getRequiredEnv("ADMIN_PASSWORD_HASH");
+  const configuredUsername = getRequiredEnv("MEDIA_ADMIN_USERNAME");
+  const configuredPasswordHash = getRequiredEnv("MEDIA_ADMIN_PASSWORD_HASH");
 
   const usernameA = Buffer.from(username, "utf8");
   const usernameB = Buffer.from(configuredUsername, "utf8");
@@ -116,7 +116,7 @@ export function verifyMediaSessionToken(token: string | undefined) {
       return null;
     }
 
-    if (payload.username !== getRequiredEnv("ADMIN_USERNAME")) {
+    if (payload.username !== getRequiredEnv("MEDIA_ADMIN_USERNAME")) {
       return null;
     }
 
