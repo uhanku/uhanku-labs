@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 
+// yes
 import { MEDIA_SESSION_COOKIE, verifyMediaSessionToken } from "@/lib/auth";
 
 import styles from "./page.module.css";
@@ -106,12 +107,16 @@ function HomeHub({ username }: { username: string }) {
             <p className={styles.eyebrow}>UHANKU LABS / HOME</p>
             <h1 className={styles.title}>Pick a route.</h1>
             <p className={styles.intro}>
-              Signed in as <strong>{username}</strong>. Everything built so far lives here.
+              Signed in as <strong>{username}</strong>. Everything built so far
+              lives here.
             </p>
           </div>
 
           <form action="/api/auth/logout" method="post">
-            <button className={`${styles.button} ${styles.buttonSecondary}`} type="submit">
+            <button
+              className={`${styles.button} ${styles.buttonSecondary}`}
+              type="submit"
+            >
               SIGN OUT
             </button>
           </form>
@@ -144,7 +149,9 @@ export default async function HomePage({
   let session: ReturnType<typeof verifyMediaSessionToken> = null;
 
   try {
-    session = verifyMediaSessionToken(cookieStore.get(MEDIA_SESSION_COOKIE)?.value);
+    session = verifyMediaSessionToken(
+      cookieStore.get(MEDIA_SESSION_COOKIE)?.value,
+    );
   } catch {
     // Keep the login form visible when the server is not configured yet.
   }
