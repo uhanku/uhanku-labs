@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     clearMediaLoginFailures(key);
-    const response = redirectToMediaPath("/media-admin");
+    const response = redirectToMediaPath("/");
     response.cookies.set(
       MEDIA_SESSION_COOKIE,
       createMediaSessionToken(username),
