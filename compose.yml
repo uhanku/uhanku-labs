@@ -31,8 +31,8 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
-      ADMIN_USERNAME: ${ADMIN_USERNAME:-}
-      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
+      MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
       MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
       MEDIA_STORAGE_DIR: /app/storage/media
       MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
@@ -44,8 +44,8 @@ services:
       - ul-node_modules:/app/node_modules
       - ul-next-dev:/app/.next
       - ul-storage-dev:/app/storage
-    ports:
-      - "5555:3000"
+    expose:
+      - "3000"
     depends_on:
       mysql:
         condition: service_healthy
@@ -59,8 +59,8 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: mysql://${MYSQL_USER:-uhanku}:${MYSQL_PASSWORD:-uhanku}@mysql:3306/${MYSQL_DATABASE:-uhanku_labs}
-      ADMIN_USERNAME: ${ADMIN_USERNAME:-}
-      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      MEDIA_ADMIN_USERNAME: ${MEDIA_ADMIN_USERNAME:-}
+      MEDIA_ADMIN_PASSWORD_HASH: ${MEDIA_ADMIN_PASSWORD_HASH:-}
       MEDIA_SESSION_SECRET: ${MEDIA_SESSION_SECRET:-}
       MEDIA_STORAGE_DIR: /app/storage/media
       MEDIA_UPLOAD_TEMP_DIR: /app/storage/media-uploads
@@ -76,6 +76,83 @@ services:
       mysql:
         condition: service_healthy
 
+  open-webui:
+    build:
+      context: .
+      dockerfile: docker/openwebui.Dockerfile
+    restart: unless-stopped
+    environment:
+      WEBUI_NAME: "u-chat"
+      WEBUI_URL: ${OPENWEBUI_WEBUI_URL:-http://chat.uhanku.test}
+      CORS_ALLOW_ORIGIN: ${OPENWEBUI_CORS_ALLOW_ORIGIN:-http://chat.uhanku.test}
+      OPENAI_API_BASE_URLS: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      OPENAI_API_KEYS: ${OPENROUTER_API_KEY:-}
+      ENABLE_WEB_SEARCH: "true"
+      WEB_SEARCH_ENGINE: searxng
+      WEB_SEARCH_RESULT_COUNT: "5"
+      WEB_SEARCH_CONCURRENT_REQUESTS: "3"
+      SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+    volumes:
+      - ul-open-webui:/app/backend/data
+    expose:
+      - "8080"
+    depends_on:
+      - searxng
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?SEARXNG_SECRET must be set}
+    volumes:
+      - ./docker/searxng:/etc/searxng
+      - ul-searxng-cache:/var/cache/searxng
+    expose:
+      - "8080"
+
+  crawl4ai:
+    image: unclecode/crawl4ai:0.9.2
+    restart: unless-stopped
+    environment:
+      CRAWL4AI_API_TOKEN: ${CRAWL4AI_API_TOKEN:?CRAWL4AI_API_TOKEN must be set}
+      # Extraction LLM via OpenRouter (LiteLLM: model=openrouter/<id>)
+      LLM_PROVIDER: ${LLM_PROVIDER:-openrouter/liquid/lfm-2.5-2.6b:free}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_API_BASE: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      # Compatibility: allow openai/provider path with OpenRouter endpoint
+      OPENAI_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+      LLM_BASE_URL: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
+    expose:
+      - "11235"
+    shm_size: "1gb"
+    user: "appuser"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/lib/redis:uid=999,gid=999,mode=0700
+      - /var/lib/crawl4ai/outputs:uid=999,gid=999,mode=0700
+      - /home/appuser/.crawl4ai:uid=999,gid=999,mode=0700
+      - /home/appuser/.cache/url_seeder:uid=999,gid=999,mode=0700
+      - /home/appuser/.gunicorn:uid=999,gid=999,mode=0700
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11235/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          pids: 512
+        reservations:
+          memory: 1G
+
   nginx:
     image: nginx:stable-alpine
     ports:
@@ -83,6 +160,32 @@ services:
       - "443:443"
     volumes:
       - "${NGINX_CONFIG:-./docker/nginx/dev/nginx.conf}:/etc/nginx/conf.d/default.conf:ro"
+
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    restart: unless-stopped
+    command: gateway run
+    volumes:
+      - ./.hermes:/opt/data
+    ports:
+      - "127.0.0.1:8642:8642"
+      - "0.0.0.0:9119:9119"
+    environment:
+      HERMES_UID: ${HERMES_UID:-1000}
+      HERMES_GID: ${HERMES_GID:-1000}
+      HERMES_DASHBOARD: "1"
+      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: "${HERMES_USERNAME}"
+      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: "${HERMES_PASSWORD}"
+      HERMES_DASHBOARD_BASIC_AUTH_SECRET: "${HERMES_AUTH_SECRET}"
+      API_SERVER_ENABLED: "true"
+      API_SERVER_HOST: "0.0.0.0"
+      API_SERVER_KEY: "${HERMES_API_SERVER_KEY}"
+    shm_size: "2gb"
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
 
 volumes:
   ul-mysql:
