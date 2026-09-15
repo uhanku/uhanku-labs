@@ -42,16 +42,16 @@ const appRoutes: readonly RouteLink[] = [
 
 const experimentRoutes: readonly RouteLink[] = [
   {
-    href: "/ex/ai-swe-stats",
-    path: "/ex/ai-swe-stats",
+    href: "/stats/why-now/reason-1",
+    path: "/stats/why-now/reason-1",
     title: "AI in the Developer Workflow",
     description:
       "A minimal visual summary of AI adoption, daily use, learning, and verification habits among developers.",
     access: "public",
   },
   {
-    href: "/ex/aie-2020-2026",
-    path: "/ex/aie-2020-2026",
+    href: "/stats/why-now/reason-2",
+    path: "/stats/why-now/reason-2",
     title: "AI Progress 2020–2026",
     description:
       "An interactive visual history of AI progress, from GAN photorealism and diffusion to multimodal agents and robotics.",
