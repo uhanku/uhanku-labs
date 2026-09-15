@@ -57,22 +57,6 @@ const experimentRoutes: readonly RouteLink[] = [
       "An interactive visual history of AI progress, from GAN photorealism and diffusion to multimodal agents and robotics.",
     access: "public",
   },
-  {
-    href: "/stats/why-now/reason-1",
-    path: "/stats/why-now/reason-1",
-    title: "AI in the Developer Workflow",
-    description:
-      "A focused visual summary of AI adoption, daily use, learning, and verification habits among developers.",
-    access: "public",
-  },
-  {
-    href: "/stats/why-now/reason-2",
-    path: "/stats/why-now/reason-2",
-    title: "AI Progress 2020–2026",
-    description:
-      "A visual history of AI progress from constrained image generation to multimodal assistants, agents, and complete creative workflows.",
-    access: "public",
-  },
 ];
 
 const messages: Record<string, string> = {
