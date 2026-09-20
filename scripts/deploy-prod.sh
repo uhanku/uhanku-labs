@@ -95,8 +95,19 @@ docker compose up -d --no-deps --force-recreate labs
 printf '%s\n' 'Starting Open WebUI...'
 docker compose up -d --no-deps open-webui
 
+printf '%s\n' 'Starting file export server...'
+docker compose up -d --no-deps file-export-server
+
+printf '%s\n' 'Starting native MCP file generator...'
+docker compose up -d --no-deps file-generator
+
 printf '%s\n' 'Ensuring the production reverse proxy is running...'
 docker compose up -d --no-deps nginx
 
 printf '%s\n' 'Production services:'
-docker compose ps labs open-webui nginx
+docker compose ps \
+  labs \
+  open-webui \
+  file-export-server \
+  file-generator \
+  nginx

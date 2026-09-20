@@ -85,19 +85,60 @@ services:
       WEBUI_NAME: "u-chat"
       WEBUI_URL: ${OPENWEBUI_WEBUI_URL:-http://chat.uhanku.test}
       CORS_ALLOW_ORIGIN: ${OPENWEBUI_CORS_ALLOW_ORIGIN:-http://chat.uhanku.test}
+
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?WEBUI_SECRET_KEY must be set}
+
       OPENAI_API_BASE_URLS: ${OPENROUTER_API_BASE_URL:-https://openrouter.ai/api/v1}
       OPENAI_API_KEYS: ${OPENROUTER_API_KEY:-}
+
       ENABLE_WEB_SEARCH: "true"
       WEB_SEARCH_ENGINE: searxng
       WEB_SEARCH_RESULT_COUNT: "5"
       WEB_SEARCH_CONCURRENT_REQUESTS: "3"
       SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+
+      # Code Interpreter
+      ENABLE_CODE_EXECUTION: "true"
+      CODE_EXECUTION_ENGINE: "pyodide"
+      ENABLE_CODE_INTERPRETER: "true"
+      CODE_INTERPRETER_ENGINE: "pyodide"
+      # Optional, makes /mnt/uploads survive browser reloads
+      ENABLE_PYODIDE_FILE_PERSISTENCE: "true"
     volumes:
       - ul-open-webui:/app/backend/data
     expose:
       - "8080"
     depends_on:
       - searxng
+
+  file-export-server:
+    image: ghcr.io/glissemantv/owui-file-export-server:latest
+    restart: unless-stopped
+    environment:
+      FILE_EXPORT_DIR: /output
+    volumes:
+      - ul-generated-files:/output
+    expose:
+      - "9003"
+
+  file-generator:
+    image: ghcr.io/glissemantv/file-gen-sse-http:latest
+    restart: unless-stopped
+    environment:
+      MODE: http
+      FILE_EXPORT_DIR: /output
+      FILE_EXPORT_BASE_URL: ${GENERATED_FILES_BASE_URL:-http://chat.uhanku.test/generated-files}
+      PERSISTENT_FILES: "true"
+      FILES_DELAY: "60"
+      LOG_LEVEL: "INFO"
+      OWUI_URL: http://open-webui:8080
+    volumes:
+      - ul-generated-files:/output
+    expose:
+      - "9004"
+    depends_on:
+      - file-export-server
+      - open-webui
 
   searxng:
     image: docker.io/searxng/searxng:latest
@@ -195,3 +236,4 @@ volumes:
   ul-storage-prod:
   ul-open-webui:
   ul-searxng-cache:
+  ul-generated-files:
