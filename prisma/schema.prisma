@@ -80,3 +80,79 @@ model BusScheduleDirection {
   @@unique([scheduleId, direction])
   @@map("bus_schedule_directions")
 }
+
+model BusinessDataset {
+  id               Int              @id @default(autoincrement()) @db.UnsignedInt
+  importedAt       DateTime         @default(now()) @map("imported_at")
+  source           String           @db.VarChar(255)
+  dataset          String           @db.VarChar(255)
+  area             String           @db.VarChar(255)
+  primarySource    String           @map("primary_source") @db.VarChar(255)
+  enrichmentSource String           @map("enrichment_source") @db.VarChar(255)
+  rules            Json
+  counts           Json
+  active           Boolean          @default(true)
+  businesses       Business[]
+
+  @@index([active, importedAt])
+  @@map("business_datasets")
+}
+
+model Business {
+  id                    Int                   @id @default(autoincrement()) @db.UnsignedInt
+  datasetId             Int                   @map("dataset_id") @db.UnsignedInt
+  dataset               BusinessDataset       @relation(fields: [datasetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  key                   String                @db.VarChar(255)
+  name                  String                @db.VarChar(255)
+  category              String?               @db.VarChar(255)
+  secondaryCategory     String?               @map("secondary_category") @db.VarChar(255)
+  address               String?               @db.VarChar(1024)
+  locality              String?               @db.VarChar(255)
+  postalCode            String?               @map("postal_code") @db.VarChar(32)
+  phone                 String?               @db.VarChar(128)
+  website               String?               @db.VarChar(2048)
+  rating                Float?
+  reviewCount           Int?                  @map("review_count")
+  hoursSummary          String?               @map("hours_summary") @db.Text
+  plusCode              String?               @map("plus_code") @db.VarChar(128)
+  latitude              Float?
+  longitude             Float?
+  notes                 Json
+  googleMapsUrl         String?               @map("google_maps_url") @db.VarChar(2048)
+  queriesDiscoveredVia  Json                  @map("queries_discovered_via")
+  collectedAt           String?               @map("collected_at") @db.VarChar(64)
+  locationMatch         String?               @map("location_match") @db.VarChar(64)
+  locationReason        String?               @map("location_reason") @db.Text
+  smbLikelihood         String?               @map("smb_likelihood") @db.VarChar(64)
+  smbConfidence         String?               @map("smb_confidence") @db.VarChar(64)
+  smbReason             String?               @map("smb_reason") @db.Text
+  sources               Json
+  openstreetmap         OpenStreetMapRecord[]
+
+  @@unique([datasetId, key])
+  @@index([datasetId])
+  @@map("businesses")
+}
+
+model OpenStreetMapRecord {
+  id                   Int             @id @default(autoincrement()) @db.UnsignedInt
+  businessId           Int             @map("business_id") @db.UnsignedInt
+  business             Business        @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  osmType              String          @map("osm_type") @db.VarChar(32)
+  osmId                BigInt          @map("osm_id") @db.UnsignedBigInt
+  name                 String?         @db.VarChar(255)
+  category             String?         @db.VarChar(255)
+  address              String?         @db.VarChar(1024)
+  phone                String?         @db.VarChar(128)
+  website              String?         @db.VarChar(2048)
+  openingHours         String?         @map("opening_hours") @db.Text
+  latitude             Float?
+  longitude            Float?
+  osmTags              Json?           @map("osm_tags")
+  matchNameSimilarity  Float?          @map("match_name_similarity")
+  matchDistanceM       Float?          @map("match_distance_m")
+
+  @@index([businessId])
+  @@index([osmType, osmId])
+  @@map("openstreetmap_records")
+}

@@ -1,0 +1,117 @@
+.page {
+  min-height: 100vh;
+  padding: clamp(32px, 7vw, 88px) clamp(18px, 5vw, 64px);
+}
+
+.shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--arcade-cyan);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: .12em;
+}
+
+.title {
+  margin: 14px 0 0;
+  font-size: clamp(2.2rem, 7vw, 4.8rem);
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+
+.intro {
+  max-width: 720px;
+  margin: 18px 0 0;
+  color: var(--arcade-muted);
+  line-height: 1.7;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+}
+
+.button {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--arcade-acid);
+  color: var(--arcade-bg);
+  background: var(--arcade-acid);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  font-weight: 800;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+  outline: none;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 rgba(216, 255, 101, .18);
+}
+
+.buttonSecondary {
+  border-color: var(--arcade-line);
+  color: var(--arcade-muted);
+  background: transparent;
+}
+
+.importPanel {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid var(--arcade-line);
+  background: var(--arcade-panel);
+}
+
+.importLabel {
+  margin: 0;
+  color: var(--arcade-acid);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: .1em;
+}
+
+.importHelp,
+.fileName,
+.importStatus {
+  margin: 7px 0 0;
+  color: var(--arcade-muted);
+  font-size: var(--text-xs);
+}
+
+.importActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.fileInput {
+  min-width: 0;
+  color: var(--arcade-muted);
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.importSuccess { color: var(--arcade-acid); }
+.importError { color: var(--arcade-hot); }
+
+@media (max-width: 620px) {
+  .headerRow {
+    display: grid;
+  }
+}

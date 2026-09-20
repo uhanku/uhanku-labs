@@ -21,6 +21,9 @@ test("migrations create the required tables and seed records", async () => {
   const tableNames = tables.map(({ tableName }) => tableName);
   assert.ok(tableNames.includes("users"));
   assert.ok(tableNames.includes("web_apps"));
+  assert.ok(tableNames.includes("business_datasets"));
+  assert.ok(tableNames.includes("businesses"));
+  assert.ok(tableNames.includes("openstreetmap_records"));
 
   const webApps = await prisma.webApp.findMany({ orderBy: { name: "asc" } });
   assert.deepEqual(webApps, [
@@ -52,4 +55,41 @@ test("migrations create the required tables and seed records", async () => {
 
   const foreignKeys = await prisma.$queryRaw<Array<{ columnName: string; referencedTable: string }>>`SELECT COLUMN_NAME AS columnName, REFERENCED_TABLE_NAME AS referencedTable FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'webapp_id'`;
   assert.deepEqual(foreignKeys, [{ columnName: "webapp_id", referencedTable: "web_apps" }]);
+});
+
+test("Business records cascade and dataset replacement is relational", async () => {
+  await prisma.businessDataset.deleteMany();
+
+  const oldDataset = await prisma.businessDataset.create({
+    data: {
+      source: "old.json",
+      dataset: "Old",
+      area: "Test Area",
+      primarySource: "Primary",
+      enrichmentSource: "OSM",
+      rules: {},
+      counts: {},
+      active: true,
+      businesses: { create: { key: "old", name: "Old", notes: [], queriesDiscoveredVia: [], sources: [] } },
+    },
+  });
+  await prisma.businessDataset.create({
+    data: {
+      source: "new.json",
+      dataset: "New",
+      area: "Test Area",
+      primarySource: "Primary",
+      enrichmentSource: "OSM",
+      rules: {},
+      counts: {},
+      active: true,
+      businesses: { create: { key: "new", name: "New", notes: [], queriesDiscoveredVia: [], sources: [] } },
+    },
+  });
+  await prisma.businessDataset.delete({ where: { id: oldDataset.id } });
+
+  assert.deepEqual(await prisma.business.findMany({ select: { key: true } }), [{ key: "new" }]);
+  const foreignKeys = await prisma.$queryRaw<Array<{ tableName: string; columnName: string; referencedTable: string }>>`SELECT TABLE_NAME AS tableName, COLUMN_NAME AS columnName, REFERENCED_TABLE_NAME AS referencedTable FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ('businesses', 'openstreetmap_records') AND REFERENCED_TABLE_NAME IS NOT NULL`;
+  assert.ok(foreignKeys.some((key) => key.tableName === "businesses" && key.columnName === "dataset_id" && key.referencedTable === "business_datasets"));
+  assert.ok(foreignKeys.some((key) => key.tableName === "openstreetmap_records" && key.columnName === "business_id" && key.referencedTable === "businesses"));
 });

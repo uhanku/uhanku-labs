@@ -38,6 +38,14 @@ const appRoutes: readonly RouteLink[] = [
     description: "The active schedule and the buses leaving in the next hour.",
     access: "private",
   },
+  {
+    href: "/apps/businesses",
+    path: "/apps/businesses",
+    title: "Businesses",
+    description:
+      "The cleaned local business directory for any area — search, filter, and preview each record.",
+    access: "private",
+  },
 ];
 
 const experimentRoutes: readonly RouteLink[] = [
