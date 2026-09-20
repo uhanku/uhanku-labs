@@ -413,25 +413,25 @@
   line-height: 1;
 }
 
-.b8017 {
+.bBlue {
   border-color: color-mix(in srgb, var(--arcade-blue) 62%, var(--arcade-line));
   color: var(--arcade-blue);
   background: rgba(120, 168, 255, 0.09);
 }
 
-.b8028 {
+.bOrange {
   border-color: color-mix(in srgb, var(--arcade-orange) 62%, var(--arcade-line));
   color: var(--arcade-orange);
   background: rgba(255, 155, 74, 0.09);
 }
 
-.b8029 {
+.bAcid {
   border-color: color-mix(in srgb, var(--arcade-acid) 62%, var(--arcade-line));
   color: var(--arcade-acid);
   background: rgba(216, 255, 101, 0.09);
 }
 
-.b8041 {
+.bPurple {
   border-color: color-mix(in srgb, var(--arcade-purple) 62%, var(--arcade-line));
   color: var(--arcade-purple);
   background: rgba(116, 55, 235, 0.12);

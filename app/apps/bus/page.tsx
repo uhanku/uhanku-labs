@@ -119,13 +119,13 @@ export default async function BusPage() {
           immediately after the service day.
         </p>
         <p>
-          Lines 8028 and 8029 are circular — check the destination display on
-          the bus for the indicated route.
+          On circular lines, check the destination display on the bus for the
+          indicated route.
         </p>
         <p className={styles.meta}>
           {schedule
-            ? `Planned schedules · data checked on ${formatConsultedOn(schedule.meta.consultedOn)} · confirm real-time changes on UNIR / Q.Horas`
-            : "Planned schedules · confirm real-time changes on UNIR / Q.Horas"}
+            ? `Planned schedules · data checked on ${formatConsultedOn(schedule.meta.consultedOn)} · confirm real-time changes with the transit operator`
+            : "Planned schedules · confirm real-time changes with the transit operator"}
         </p>
       </footer>
     </main>

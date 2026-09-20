@@ -31,31 +31,31 @@ const MAX_IMPORT_BYTES = 256 * 1024;
 
 const EXAMPLE_STRUCTURE = `{
   "document": {
-    "title": "Horários Granja ↔ Campanhã",
+    "title": "Capital Metro — Mueller ↔ Downtown",
     "consultedOn": "2026-09-07",
     "generalNotes": [
-      "Nas linhas circulares, os horários 00:xx e 01:xx ..."
+      "On circular lines, 00:xx and 01:xx times belong to the early morning after the service day."
     ]
   },
   "schedules": [
     {
-      "direction": "granja",
+      "direction": "downtown",
       "dayType": "weekday",
-      "heading": "Granja → Campanhã",
-      "location": "Paragem Granja, Gondomar (São Cosme), Valbom e Jovim",
-      "howToRead": "Horas previstas de passagem na paragem Granja.",
+      "heading": "Mueller → Downtown",
+      "location": "Stop 3508 · Mueller Park & Ride, Austin, TX",
+      "howToRead": "Scheduled departure times from the Mueller Park & Ride stop.",
       "lines": [
         {
-          "line": "8017",
-          "route": "Campanhã Estação - via Centro de Saúde",
+          "line": "801",
+          "route": "Tech Ridge Park & Ride - via North Lamar",
           "operates": true,
-          "times": ["06:36", "07:16", "07:51"]
+          "times": ["06:20", "06:40", "07:00"]
         },
         {
-          "line": "8041",
-          "route": "Campanhã Estação - via Vila Verde",
+          "line": "803",
+          "route": "Southpark Meadows - via South Lamar",
           "operates": false,
-          "status": "Não opera ao sábado",
+          "status": "No weekend service",
           "times": []
         }
       ]
@@ -130,14 +130,14 @@ function collectCandidates(
 
 function badgeClass(lineNo: string, styles: Record<string, string>): string {
   switch (lineNo) {
-    case "8017":
-      return styles.b8017;
-    case "8028":
-      return styles.b8028;
-    case "8029":
-      return styles.b8029;
-    case "8041":
-      return styles.b8041;
+    case "801":
+      return styles.bBlue;
+    case "803":
+      return styles.bOrange;
+    case "1":
+      return styles.bAcid;
+    case "20":
+      return styles.bPurple;
     default:
       return styles.bDefault;
   }
